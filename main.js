@@ -1,11 +1,6 @@
 const { app, clipboard, BrowserWindow, Menu, Tray, globalShortcut} = require('electron')
 const screenshot = require('screenshot-desktop')
 const request = require('request');
-var screenshotNode = require('screenshot-node');
-const {openCropperWindow, isCropperOpen} = require('./modules/cropper')
-// const Store = require('electron-store');
-// const store = new Store();
-
 
 const uploadUrl = 'https://pixeldrain.com/api/file';
 let win = null;
@@ -66,7 +61,7 @@ function createWindow() {
 
 async function addListeners() {
 	var displays = await screenshot.listDisplays();
-	// Fuck man, this ain't really pretty huh
+	// Fuck, this ain't really pretty huh
 	
 	globalShortcut.register('CommandOrControl+Shift+1', function() {
 		if (displays[0]) {
@@ -91,30 +86,6 @@ async function addListeners() {
 			});
 		}
   });
-
-  globalShortcut.register('CommandOrControl+Shift+4', function() {
-		screenshotNode.saveScreenshot(0, 0, 100, 100, "image.png", (err) => {
-			if(err) console.log(err);
-		});
-	
-		// ioHook.once("mousedown",function(event) {
-		// 	console.log(event, getCursorLocation());\
-			// robotjs.screen.capture(x,y,width,height)
-		// })
-
-		// mouse.once("mouseup", function(event) {
-		// 	console.log(event, getCursorLocation())
-		// });
-		
-
-
-    // screenshot({ format: 'png', screen: displays[0].id }).then((img) => {
-		// 	// openCropperWindow(img);
-		// 	uploadImage(img);
-		// });
-	 });
-}
-
 
 function uploadImage(img) {
 	const date = new Date();
