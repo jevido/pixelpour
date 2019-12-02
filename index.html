@@ -1,0 +1,246 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="Jeffrey Duivenvoorden">
+    <title>PixelPour!</title>
+
+    <!-- Bootstrap core CSS -->
+		<link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+		
+    <!-- Custom styles for this template -->
+		<style>
+			:root {
+				--text_color:                 hsl(0, 0.000%, 75.000%);
+				--input_color:                hsl(192, 95.000%, 25.000%);
+				--input_color_dark:           hsl(192, 95.000%, 22.000%);
+				--input_text_color:           hsl(0, 0.000%, 100.000%);
+				--highlight_color:            hsl(145, 63.000%, 42.000%);
+				--highlight_color_dark:       hsl(145, 63.000%, 39.000%);
+				--highlight_text_color:       hsl(0, 0.000%, 0.000%);
+				--danger_color:               hsl(343, 63.000%, 42.000%);
+				--danger_color_dark:          hsl(343, 63.000%, 39.000%);
+				--file_background_color:      hsl(192, 87.000%, 5.000%);
+				--scrollbar_foreground_color: hsl(192, 95.000%, 30.000%);
+				--scrollbar_background_color: hsl(0, 0.000%, 0.000%);
+
+				--background_color:           hsl(192, 100.000%, 5.000%);
+				--body_color:                 hsl(192, 81.000%, 14.000%);
+				--accent_color_headerbar:     hsl(192, 100.000%, 11.000%);
+				--accent_color_dark:          hsl(192, 87.000%, 9.000%);
+				--accent_color_medium:        hsl(192, 81.000%, 14.000%);
+				--accent_color_light:         hsl(192, 95.000%, 17.000%);
+
+				--shadow_color:     hsl(0, 0.000%, 0.000%);
+				--shadow_spread:    10px;
+				--shadow_intensity: 0px;
+			}
+			.bd-placeholder-img {
+				font-size: 1.125rem;
+				text-anchor: middle;
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+			}
+
+			@media (min-width: 768px) {
+				.bd-placeholder-img-lg {
+					font-size: 3.5rem;
+				}
+			}
+
+			/* Overwrite bootstrap styles */
+			body {
+				background-color: var(--background_color);
+				color: var(--text_color);
+			}
+			header {background-color: var(--accent_color_headerbar)}
+			a {color: var(--highlight_color)}
+			.bg-dark { 
+				background-color: var(--accent_color_dark) !important; 
+				box-shadow: inset 1px 1px 8px -1px var(--shadow_color);
+			}
+			.jumbotron-heading {color: var(--cyan)}
+			.body-color {background-color: var(--body-color)}
+			.lead.text-muted {color: var(--cyan) !important;}
+
+			.jumbotron {    border-bottom: 1px solid var(--shadow_color); margin-bottom: 0px;}
+
+			input[type=file]{
+				visibility: hidden;
+				position: static;
+				width: 0;
+				height: 0;
+			}
+
+			.upload-btn-wrapper {
+				position: relative;
+				/* overflow: hidden; */
+				display: inline-block;
+			}
+
+			.btn {
+				border: 2px solid var(--input_color_dark);
+				color: var(--text_color);
+				background-color: var(--input_color);
+				padding: 8px 20px;
+				border-radius: 8px;
+				font-size: 20px;
+				font-weight: bold;
+			}
+
+			.upload-btn-wrapper input[type=file] {
+				font-size: 100px;
+				position: absolute;
+				left: 0;
+				top: 0;
+				opacity: 0;
+      }
+      .fornax {
+        background: url('assets/images/background.jpg');
+      }
+      footer {
+        position: fixed;
+        bottom: 0px;
+        width: 100%;
+        background-color: var(--accent_color_dark) !important;
+        padding-top: 10px;
+      }
+
+      ::-webkit-scrollbar{
+        width: 12px;  /* for vertical scrollbars */
+        height: 12px; /* for horizontal scrollbars */
+      }
+      ::-webkit-scrollbar-track {background: (hsl(0, 0.000%, 0.000%));}
+      ::-webkit-scrollbar-thumb {
+        background-color: hsl(192, 95.000%, 30.000%);
+        border-radius: 6px;
+      }
+      ::-webkit-scrollbar-corner{background: var(--scrollbar_background_color);}
+      a       {color: hsl(145, 63.000%, 42.000%); text-decoration: none;}
+      a:hover {color: hsl(145, 63.000%, 42.000%); text-decoration: underline;}
+      main {
+        /* min-height: calc(100vh - 120px); */
+        /* height: 100%; */
+        /* overflow-y: hidden; */
+      }
+      .uploaded-files {
+        /* height: -webkit-fill-available; */
+        /* overflow-y:scroll; */
+        padding: 35px;
+      }
+      
+      #drop-area {
+        border-bottom: 1px solid var(--shadow_color);
+      }
+      section, footer {
+        opacity: 0.9;
+      }
+
+			#uploaded-files .col-md-4 .card {
+				opacity: 0.9;
+				color: white;
+				background: var(--accent_color_dark);
+				padding: 4px;
+				border-radius: 5px;
+			}
+			.card-text {
+        color: #ffffff;
+      }
+		</style>
+  </head>
+  <body class="fornax">
+    <header>
+			<div class="collapse" id="navbarHeader">
+				<div class="container">
+					<div class="row">
+						<div class="col-12 py-4">
+							<h4 class="text-white">Does PixelDrain cost any money?</small></h4>
+							<p class="text-light">
+									No, PixelDrain is completely free at the moment. While there is an advertisement on the file downloading page, it doesn't generate nearly enough revenue to pay for maintaining this service. That's why I'd really appreciate it if you could spare some coins. Possible methods for donating are:
+									
+								<ul class="text-light">
+									<li>Bitcoin: <a target="_BLANK" href="bitcoin:1Ne7hGuvnfz9EFTRD3PLWVeaJTX9oA1QUr?label=Pixeldrain%20Donation">1Ne7hGuvnfz9EFTRD3PLWVeaJTX9oA1QUr</a></li>
+									<li>
+										BasicAttentionToken: Donate BAT by clicking the BAT icon in
+										your address bar. If you don't have Brave browser yet you
+										can download it here:
+										<a class="button button_highlight" href="https://brave.com/pix009" target="_blank">Install Brave</a>.
+										Installing and using Brave with this referral link also
+										counts as a 5$ donation.
+									</li>
+									<li>
+										Siacoin:
+										26117c19ca3975b315d663dcbbc19cf9c07274f441689d4392ed380b2337589ef1aacfbdc93f
+										(this address points directly at the storage backend.
+										Donations will be used for paying storage contracts with Sia
+										hosts)
+									</li>
+									<li>
+										PayPal:
+										<a class="button button_highlight" target="_BLANK" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=WU49A5NHPAZ9G&amp;source=url">Donate with PayPal</a>
+									</li>
+								</ul>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="navbar navbar-dark shadow-sm">
+				<div class="container d-flex justify-content-between">
+					<a href="#" class="navbar-brand d-flex align-items-center">
+						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true" class="mr-2" viewBox="0 0 24 24" focusable="false"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+						<strong>PixelPour! </strong><small>&nbsp;- Light</small>
+					</a>
+					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+				</div>
+			</div>
+		</header>
+
+		<main role="main">
+
+			<section id="drop-area" class="jumbotron bg-dark text-center">
+				<div class="container">
+					<h1 class="jumbotron-heading">Upload files</h1>
+					<p class="lead text-muted">The file size limit is 10 GB. There is no limit on the number of files you can upload.</p>
+					<p class="text-muted">You can also drag files onto this area to upload</p>
+					
+					<p>
+						<div class="upload-btn-wrapper">
+							<button class="btn">Upload a file</button>
+							<input type="file" id="uploadFile" name="myfile" />
+						</div>
+						<!-- <input type="file" href="#"  class="btn btn-primary my-2" placeholder="Upload" /> -->
+					</p>
+				</div>
+			</section>
+
+			<div class="body-color uploaded-files py-5">
+				<div class="container">
+					<div class="row" id="uploaded-files">
+						<!-- Here goes the uploaded files-->
+
+					</div>
+				</div>
+			</div>
+
+		</main>
+
+		<footer class="text-muted">
+			<div class="container">
+				<p>Pixeldrain is a product by <a href="https://fornaxian.com" target="_blank">Fornaxian Technologies</a> |
+					Twitter:&nbsp;<a href="https://twitter.com/Fornax96" target="_blank">@Fornax96</a>
+					Reddit:&nbsp;<a href="https://reddit.com/r/pixeldrain" target="_blank">/r/pixeldrain</a>
+					Medium:&nbsp;<a href="https://medium.com/pixeldrain" target="_blank">Pixeldrain</a></p>
+			</div>
+		</footer>
+
+		<script>window.$ = window.jQuery = require('jquery');</script>
+		<script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+		<script src="assets/js/main.js"></script>
+	</body>
+</html>

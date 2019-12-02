@@ -1,0 +1,30 @@
+{
+  "name": "pixelpour",
+  "version": "0.3.0",
+  "description": "Create screenshots and such and upload it to pixeldrain",
+  "main": "main.js",
+  "devDependencies": {
+    "bootstrap": "^4.3.1",
+    "delay": "^4.3.0",
+    "electron": "^5.0.8",
+    "electron-rebuild": "^1.8.6",
+    "electron-store": "^4.0.0",
+    "install": "^0.13.0",
+    "jquery": "^3.4.1",
+    "nexe": "^3.3.2",
+    "screenshot-desktop": "^1.9.0"
+  },
+  "bin": "main.js",
+  "dependencies": {
+    "screenshot-node": "^1.2.1"
+  },
+  "scripts": {
+		"start": "electron .",
+    "package": "pkg package.json"
+  },
+  "keywords": [
+    "pixelpour"
+  ],
+  "author": "Jeffrey Duivenvoorden",
+  "license": "GLWTPL"
+}

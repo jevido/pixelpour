@@ -1,0 +1,441 @@
+/*
+    Created on : Jun 3, 2015, 9:33:11 AM
+    Author     : Fornax
+
+		From layout.css on : Juli 19, 2019, 9:33:11 AM
+		By Jeffrey Duivenvoorden		
+*/
+
+/* Fonts */
+
+@font-face {
+	font-family: 'Ubuntu';
+	font-style: normal;
+	font-weight: 400;
+	font-display: fallback;
+    text-rendering: optimizeLegibility;
+	src:
+		local('Ubuntu'),
+		local('Ubuntu Regular'),
+		local('Ubuntu, Regular'),
+		local('Ubuntu-Regular'),
+		url(../misc/Ubuntu-R.ttf) format('truetype');
+}
+@font-face {
+	font-family: 'Lato Thin';
+	font-display: fallback;
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+	src:
+		local('Lato Thin'),
+		local('Lato, Thin'),
+		local('Lato-Thin'),
+		local('Lato Hairline'),
+		local('Lato, Hairline'),
+		local('Lato-Hairline'),
+		url(../misc/LatoLatin-Thin.ttf) format('truetype');
+}
+@font-face {
+	font-family: 'Lato';
+	font-display: fallback;
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+	src:
+		local('Lato Regular'),
+		local('Lato, Regular'),
+		local('Lato-Regular'),
+		url(../misc/Lato-Regular.ttf) format('truetype');
+}
+
+/* Page rendering configuration */
+
+html{height: 100%;}
+
+body{
+	background-color: #0d0d0d; /* Fallback */
+	background-color: hsl(192, 100.000%, 5.000%);
+	background-repeat: repeat;
+	font-family: 'Ubuntu';
+	margin: 0;
+	text-align: center; /* Center the header and body */
+	line-height: 1.5em;
+	overflow-x: hidden;
+	color: #bfbfbf; /* Fallback */
+	color: hsl(0, 0.000%, 75.000%);
+	box-sizing: border-box;
+	padding: 0;
+}
+
+/* Page layout elements */
+
+.header_image{
+	width: 100%;
+	max-width: 1000px;
+	margin-top: 15px;
+}
+
+.body{
+	position: relative;
+	display: inline-block;
+	max-width: 1000px;
+	min-width: 300px;
+	width: 100%;
+	height: auto;
+	padding: 0;
+	margin: 30px 0 30px 0;
+	box-sizing: border-box;
+	background-color: hsl(192, 81.000%, 14.000%);
+	text-align: left;
+	box-shadow: #000000 0 0 10px, 5px;
+	box-shadow: hsl(0, 0.000%, 0.000%) 0 0 10px 0px;
+	z-index: 1;
+	word-break: break-word;
+}
+
+.navigation a {
+	float: none;
+	display: inline-block;
+	color: #bfbfbf; /* Fallback */
+	color: hsl(0, 0.000%, 75.000%);
+	text-align: center;
+	padding: 4px 6px;
+	margin: 0 4px;
+	text-decoration: none;
+	font-family: "Lato Thin", sans-serif;
+	font-weight: bold;
+	font-size: 1.8em;
+	transition: box-shadow 5s;
+}
+.navigation a:hover {
+	background: linear-gradient(#82c13e, #6da234);
+	background: linear-gradient(hsl(145, 63.000%, 42.000%), hsl(145, 63.000%, 39.000%));
+	box-shadow: #82c13e, 1px 1px 4px #000000;
+	box-shadow: inset 0px 0px 5px 1px hsl(145, 63.000%, 42.000%), 0px 0px 1px 0px hsl(145, 63.000%, 42.000%), 1px 1px 4px hsl(0, 0.000%, 0.000%);
+	color: #000000;
+	color: hsl(0, 0.000%, 0.000%);
+	transition: box-shadow 0.5s;
+	text-decoration: none;
+}
+.navigation .icon {
+	display: none;
+}
+@media screen and (max-width: 35em) {
+	.navigation a:not(:first-child) {display: none;}
+	.navigation a.icon {
+		float: right;
+		display: block;
+	}
+	.navigation.responsive {position: relative;}
+	.navigation.responsive .icon {
+		position: absolute;
+		right: 0;
+		top: 0;
+	}
+	.navigation.responsive a {
+		float: none;
+		display: block;
+		text-align: left;
+	}
+}
+
+.highlight_headerbar,
+.highlight_dark,
+.highlight_middle,
+.highlight_light,
+.highlight_green,
+.highlight_blue,
+.highlight_red {
+	position: relative;
+	width: auto;
+	height: auto;
+	margin: 0;
+	box-sizing: border-box;
+	overflow: hidden;
+	text-align: center;
+	padding: .5em;
+	z-index: 101;
+}
+.highlight_headerbar   {
+	background-color: hsl(192, 100.000%, 11.000%);
+	box-shadow: 1px 1px 3px -1px hsl(0, 0.000%, 0.000%);}
+.highlight_dark   {
+	background-color: hsl(192, 87.000%, 9.000%);
+	box-shadow: inset 1px 1px 8px -1px hsl(0, 0.000%, 0.000%);}
+.highlight_middle {
+	background-color: hsl(192, 81.000%, 14.000%);
+	box-shadow: inset 1px 1px 6px -1px hsl(0, 0.000%, 0.000%);}
+.highlight_light  {
+	background-color: hsl(192, 95.000%, 17.000%);
+	box-shadow: 1px 1px 4px hsl(0, 0.000%, 0.000%);}
+.highlight_green  {
+	background-color: rgba(0, 255, 0, 0.05);
+	border-color: #00d000;}
+.highlight_blue   {
+	background-color: rgba(32, 32, 255, 0.2);
+	border-color: rgb(54, 54, 255);}
+.highlight_red    {
+	background-color: rgba(255, 0, 0, 0.1);
+	border-color: #B00000;}
+
+.highlight_green,
+.highlight_blue,
+.highlight_red {
+	border-top-width: 1px;
+	border-top-style: solid;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+/* Common elements */
+
+h1, h2, h3, h4, h5, h6 {
+	line-height: 1em;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+h1{font-size: 2em;    font-family: "Lato Thin";}
+h2{font-size: 1.75em; font-family: "Lato Thin";}
+h3{font-size: 1.5em;  font-family: "Lato Thin";}
+h4{font-size: 1.25em; font-family: "Lato";}
+h5{font-size: 1em;    font-family: "Lato";}
+h6{font-size: .75em;  font-family: "Lato";}
+h3, h2{border-bottom: 1px hsl(192, 95.000%, 17.000%) solid;} /* Differentiate it a bit, else it just looks like bold text */
+
+p, .indent {
+	margin: 10px;
+}
+
+hr{
+	height: 8px;
+	border: none;
+	background: linear-gradient((hsl(192, 87.000%, 9.000%)), (hsl(192, 95.000%, 17.000%)));
+	margin: 16px 0 16px 0;
+}
+
+::-webkit-scrollbar{
+	width: 12px;  /* for vertical scrollbars */
+	height: 12px; /* for horizontal scrollbars */
+}
+::-webkit-scrollbar-track {background: (hsl(0, 0.000%, 0.000%));}
+::-webkit-scrollbar-thumb {
+	background-color: (hsl(192, 95.000%, 30.000%));
+	border-radius: 6px;
+}
+::-webkit-scrollbar-corner{background: transparent;}
+a       {color: hsl(145, 63.000%, 42.000%); text-decoration: none;}
+a:hover {color: hsl(145, 63.000%, 42.000%); text-decoration: underline;}
+
+.form{
+	margin-left: auto;
+	margin-right: auto;
+	text-align: left;
+	max-width: 35em;
+}
+table:not(.form) {border-collapse: collapse; width: 100%;}
+tr:not(.form)    {border-bottom: 1px (hsl(192, 81.000%, 14.000%)_border) solid;}
+tr > td          {padding: 0.5em;}
+@media(max-width: 30em) {
+	tr > td {
+		box-sizing: border-box;
+		float: left;
+		width: 100%;
+		padding: 0.5em;
+	}
+}
+
+pre{
+	padding: 2px;
+	border-bottom: 1px (hsl(192, 81.000%, 14.000%)_border) solid;
+	overflow-x: scroll;
+}
+
+.big_button{
+	height: 1.3em;
+	width: 40%;
+	min-width: 200px;
+	max-width: 400px;
+	margin: 10px !important;
+	border-radius: 5px;
+	font-size: 1.9em;
+	font-weight: normal;
+	line-height: 8px;
+}
+
+.progress_bar{
+	position: relative;
+	width: 100%;
+	height: 0;
+	background-color: #555;
+	overflow: hidden;
+	color: #eeeeee;
+	text-align: left;
+	white-space: nowrap;
+}
+.progressbar_inner{
+	position: absolute;
+	top: 0;
+	width: 0%;
+	left: 0;
+	height: 100%;
+	background-color: (hsl(145, 63.000%, 42.000%));;
+	overflow: hidden;
+	color: #000;
+	white-space: nowrap;
+}
+.progress_text{
+	overflow: hidden;
+	width: 100%;
+	white-space: nowrap;
+}
+
+.file_button{
+	position: relative;
+	box-sizing: border-box;
+	width: 310px;
+	max-width: 90%;
+	height: 60px;
+	margin: 6px;
+	padding: 0;
+	overflow: hidden;
+	border-radius: 2px;
+	box-shadow: 2px 2px 8px -3px (hsl(0, 0.000%, 0.000%));
+	background-color: (hsl(192, 87.000%, 5.000%));
+	color: #bfbfbf; /* Fallback */
+	color: (hsl(0, 0.000%, 75.000%));
+	word-break: break-all;
+	text-align: left;
+	line-height: 1.2em;
+	display: inline-block;
+	transition: box-shadow 0.3s, opacity 2s;
+	white-space: normal;
+	text-overflow: ellipsis;
+	vertical-align: top;
+}
+.file_button:hover,
+.file_button_selected {
+	box-shadow: 0px 0px 3px 3px (hsl(145, 63.000%, 42.000%));
+	text-decoration: none;
+	color: #bfbfbf; /* Fallback */
+	color: (hsl(0, 0.000%, 75.000%));
+}
+.file_button > img{
+	max-height: 100%;
+	max-width: 25%;
+	margin-right: 5px;
+	float: left;
+	display: block;
+}
+
+/* Form fields */
+
+.form_input {width: 100%;}
+
+/* BUTTONS */
+button,
+.button,
+input[type="submit"],
+input[type="button"],
+input[type="color"],
+.file_button,
+select{
+	display: inline-block;
+	box-sizing: border-box;
+	border-radius: 2px;
+	border: none;
+	margin: 3px;
+	background: linear-gradient((hsl(192, 95.000%, 25.000%)), (hsl(192, 95.000%, 25.000%)));
+	padding: 6px 8px 6px 8px;
+	box-shadow: 2px 2px 6px -3px (hsl(0, 0.000%, 0.000%));
+	font-weight: bold;
+	font-size: 0.85em;
+	overflow: hidden;
+	line-height: 1;
+	text-decoration: none;
+	color: #bfbfbf; /* Fallback */
+	color: (hsl(0, 0.000%, 100.000%));
+	outline: 0;
+	vertical-align: middle;
+	cursor: pointer;
+	transition: padding 0.25s, box-shadow 0.25s;
+}
+button:hover,
+.button:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover,
+input[type="color"]:hover,
+.file_button:hover,
+select:hover,
+button:focus,
+.button:focus,
+input[type="submit"]:focus,
+input[type="button"]:focus,
+input[type="color"]:focus,
+select:focus{
+	color: #bfbfbf; /* Fallback */
+	color: (hsl(0, 0.000%, 100.000%));
+	text-decoration: none;
+	box-shadow: (hsl(145, 63.000%, 42.000%)), 2px 2px 6px -3px (hsl(0, 0.000%, 0.000%));
+}
+button:active,
+.button:active,
+input[type="submit"]:active,
+input[type="button"]:active,
+input[type="color"]:active,
+select:active{
+	background: linear-gradient((hsl(192, 95.000%, 25.000%)), (hsl(192, 95.000%, 25.000%)));
+	box-shadow: inset 4px 4px 8px (hsl(0, 0.000%, 0.000%));
+	padding: 10px 4px 2px 12px; /* Exactly 4px offset compared to the inactive padding to give a depth effect */
+}
+.button_full_width      {width: calc(100% - 6px);}
+.button_highlight       {background: linear-gradient((hsl(145, 63.000%, 42.000%)),      (hsl(145, 63.000%, 39.000%))) !important; color: (hsl(0, 0.000%, 0.000%)) !important;}
+.button_highlight:active{background: linear-gradient((hsl(145, 63.000%, 39.000%)), (hsl(145, 63.000%, 42.000%))) !important;      color: (hsl(0, 0.000%, 0.000%)) !important;}
+.button_red             {background: linear-gradient((hsl(343, 63.000%, 42.000%)),         (hsl(343, 63.000%, 39.000%))) !important;    color: (hsl(0, 0.000%, 0.000%)) !important;}
+.button_red:active      {background: linear-gradient((hsl(343, 63.000%, 39.000%)),    (hsl(343, 63.000%, 42.000%))) !important;         color: (hsl(0, 0.000%, 0.000%)) !important;}
+
+/* Dropdown list of the select tag */
+option{
+	background-color: (hsl(192, 95.000%, 25.000%)_dark);
+	color: #bfbfbf; /* Fallback */
+	color: (hsl(0, 0.000%, 75.000%));
+}
+
+/* TEXT FIELDS */
+textarea,
+.groove,
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="number"]{
+	border: none;
+	box-sizing: border-box;
+	border-radius: 4px;
+	background: linear-gradient((hsl(192, 95.000%, 25.000%)_dark), (hsl(192, 95.000%, 25.000%)));
+	box-shadow: inset 2px 2px 6px -3px (hsl(0, 0.000%, 0.000%));
+	padding: 3px 5px;
+	color: (hsl(0, 0.000%, 100.000%));
+	height: 26px;
+	font-family: 'Ubuntu', sans-serif;
+	font-size: 1em;
+	vertical-align: middle;
+	outline: 0;
+	transition: box-shadow 0.3s;
+}
+textarea:active,
+input[type="text"]:active,
+input[type="password"]:active,
+input[type="email"]:active,
+input[type="number"]:active,
+textarea:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus{
+	box-shadow: (hsl(192, 95.000%, 17.000%)), inset 3px 3px 6px -3px (hsl(0, 0.000%, 0.000%));
+}
+
+.fornax {
+  background: url('assets/images/background.jpg');
+}
+
