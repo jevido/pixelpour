@@ -8,7 +8,6 @@
     "delay": "^4.3.0",
     "electron": "^5.0.8",
     "electron-rebuild": "^1.8.6",
-    "electron-store": "^4.0.0",
     "install": "^0.13.0",
     "jquery": "^3.4.1",
     "nexe": "^3.3.2",
@@ -16,7 +15,6 @@
   },
   "bin": "main.js",
   "dependencies": {
-    "screenshot-node": "^1.2.1"
   },
   "scripts": {
 		"start": "electron .",
