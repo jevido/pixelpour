@@ -86,6 +86,7 @@ async function addListeners() {
 			});
 		}
   });
+}
 
 function uploadImage(img) {
 	const date = new Date();
