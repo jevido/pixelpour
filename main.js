@@ -1,6 +1,7 @@
 const { app, clipboard, BrowserWindow, Menu, Tray, globalShortcut} = require('electron')
 const screenshot = require('screenshot-desktop')
 const request = require('request');
+const path = require('path');
 
 const uploadUrl = 'https://pixeldrain.com/api/file';
 let win = null;
@@ -47,7 +48,7 @@ function createWindow() {
 		height: 800,
 		backgroundColor: '#0d0d0d',
 		// frame: false,
-		icon: 'assets/images/icon.ico',
+		icon: path.join(__dirname, 'assets/images/icon.ico'),
 		// alwaysOnTop: true,
 		autoHideMenuBar: true,
 		webPreferences: {
