@@ -8,21 +8,15 @@ let win = null;
 let tray = null;
 
 function onReady() {
-	// fillingTheShelves();
 	createTray();
 	addListeners();
 	createWindow();
 }
 
-function fillingTheShelves() {
-	if (store.get('playSound')) { store.set('playSound', true) }
-	if (store.get('alwaysOnTop') != undefined) {	store.set('alwaysOnTop', false)}
-}
-
 function createTray() {
 	tray = new Tray('assets/images/icon.ico');
 	const contextMenu = Menu.buildFromTemplate([
-		{label: 'Settings', type: 'radio', click: openWindow},
+		{label: 'Open', type: 'radio', click: openWindow},
 		{label: 'Exit', type: 'radio', click: app.quit}
 	]);
 	tray.setToolTip('PixelPour!');
@@ -95,7 +89,7 @@ function uploadImage(img) {
 	var fd = {
 		name: 'Screenshot '+humanReadableDate+'.png',
 		file: img
-	} 
+	}
 
 	request.post(uploadUrl, { formData: fd}, function(err, response, body) {
 		if (err) throw err;
@@ -104,7 +98,7 @@ function uploadImage(img) {
 		
 		clipboard.writeText('https://pixeldrain.com/u/'+json.id);
 		win.webContents.send('uploadedFile', JSON.stringify(json));
-		})
+	})
 }
 
 // By god forsaken project..
