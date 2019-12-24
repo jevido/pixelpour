@@ -1,4 +1,4 @@
-const {clipboard, electron} = require('electron');
+const {clipboard, electron, shell} = require('electron');
 require('electron').ipcRenderer.on('uploadedFile', function(event, message) {
 	message = JSON.parse(message);
 
@@ -102,5 +102,9 @@ function newBrowserWindow(url, options) {
 		}
 	});	
 	wind.loadURL(url);
-
 }
+
+$('.open-external').on('click', function(ev) {
+	ev.preventDefault();
+	shell.openExternal($(this).prop('href'));
+})
