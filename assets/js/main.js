@@ -1,4 +1,6 @@
 const {clipboard, electron, shell} = require('electron');
+const uploadSuccessfullSound = new Audio('assets/misc/snap.mp3');
+
 require('electron').ipcRenderer.on('uploadedFile', function(event, message) {
 	message = JSON.parse(message);
 
@@ -64,6 +66,8 @@ function createUploadedFile(data, file) {
 	const lastUrl = 'https://pixeldrain.com/u/'+data.id;
 	const thumbnail = 'https://pixeldrain.com/api/file/'+data.id+'/thumbnail';
 	const time = +date.getHours()+':'+pad(date.getMinutes())
+
+	uploadSuccessfullSound.play();
 
 	const prepender = `
 	<div class="col-md-4">
