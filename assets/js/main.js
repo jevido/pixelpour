@@ -1,4 +1,5 @@
 const {clipboard, electron, shell} = require('electron');
+// import ScreenCapture from 'ScreenCapture.js';
 const uploadSuccessfullSound = new Audio('assets/misc/snap.mp3');
 
 require('electron').ipcRenderer.on('uploadedFile', function(event, message) {
@@ -111,4 +112,14 @@ function newBrowserWindow(url, options) {
 $('.open-external').on('click', function(ev) {
 	ev.preventDefault();
 	shell.openExternal($(this).prop('href'));
+})
+
+
+$(document).ready(async function() {
+	var screenCapture = new ScreenCapture();
+	var screenSources = await screenCapture.getSources();
+
+	for (var index in screenSources) {
+		createUploadedFile(screenCapture.capture(screenSources[index]));
+	}
 })
