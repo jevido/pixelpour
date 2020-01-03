@@ -114,12 +114,24 @@ $('.open-external').on('click', function(ev) {
 	shell.openExternal($(this).prop('href'));
 })
 
-
 $(document).ready(async function() {
 	var screenCapture = new ScreenCapture();
 	var screenSources = await screenCapture.getSources();
+	var enumerate = 0;
+	var currentContainer = 0;
 
 	for (var index in screenSources) {
-		createUploadedFile(screenCapture.capture(screenSources[index]));
+		if (enumerate % 3 == 0) {
+			currentContainer = enumerate;
+			$('.shortcuts').append(`<div class="container-${currentContainer} d-block text-center"/>`)
+		}
+		file = await screenCapture.getThumbnail(screenSources[index].id)
+
+		$(`.shortcuts .container-${currentContainer}`).append(`<img class="img-thumbnail image mx-1" src="${file.img}" alt="${file.text}">`)
+		enumerate++
 	}
 })
+
+
+
+// Would be cool, to add windows manually as well, so you can shortcut VS Code for example

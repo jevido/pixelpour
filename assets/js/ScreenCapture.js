@@ -10,6 +10,7 @@ ScreenCapture.prototype.getSources = async function() {
 		types: ['screen'],
 		thumbnailSize: { width: 1280, height: 800 }
 	})
+
 	for (var index in sources) {
 		this.addSource(sources[index]);
 	}
@@ -17,24 +18,15 @@ ScreenCapture.prototype.getSources = async function() {
 }
 
 // TBD
-ScreenCapture.prototype.getThumbnail = function(id) {
-	var sources = await desktopCapturer.getSources({
-		types: ['screen'],
-		thumbnailSize: { width: 1200, height: 800 }
-	})
+ScreenCapture.prototype.getThumbnail = async function(id) {
+	var sources = await this.getSources();
 
-	return
+	return sources[id];
 }
 // TBD
 ScreenCapture.prototype.generateName = function() {
-	const date = new Date();
-	const fileName = file.name || data.id;
-	const lastUrl = 'https://pixeldrain.com/u/'+data.id;
-	const thumbnail = 'https://pixeldrain.com/api/file/'+data.id+'/thumbnail';
-	const time = +date.getHours()+':'+pad(date.getMinutes());
-
-
-	return time;
+	var date = new Date()
+	return 'Screenshot '+ date.getFullYear()+'-'+date.getMonth()+'-'+pad(date.getDay())+' '+date.getHours()+':'+pad(date.getMinutes())+ '.png';
 }
 
 ScreenCapture.prototype.addSource = function(source) {
@@ -44,11 +36,11 @@ ScreenCapture.prototype.addSource = function(source) {
 		text: source.name,
 		img: source.thumbnail.toDataURL()
 	};
-	this.screenSources.push(source)
+	this.screenSources[source.id] = source;
+
 }
 
 ScreenCapture.prototype.capture = async function(source) {
-	
 	var stream = await navigator.mediaDevices.getUserMedia({
 		audio: false,
 		video: {
