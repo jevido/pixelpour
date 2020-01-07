@@ -1,5 +1,4 @@
 const { app, clipboard, BrowserWindow, Menu, Tray, globalShortcut} = require('electron')
-const screenshot = require('screenshot-desktop')
 const request = require('request');
 const path = require('path');
 const store = require('store')
@@ -68,47 +67,17 @@ function setShortcuts() {
 	store.set('shortcuts', defaults)
 }
 async function addListeners() {
-	if (true) {
-		var shortcuts = store.get('shortcuts');
-		console.debug(shortcuts);
-		// Read the store for which shortcuts to use
-		for (let index in shortcuts) {
-			// Damned variable hoisting
-			let shortcut = shortcuts[index];
+	var shortcuts = store.get('shortcuts');
+	// Read the store for which shortcuts to use
+	for (let index in shortcuts) {
+		// Damned variable hoisting
+		let shortcut = shortcuts[index];
 
-			globalShortcut.register(shortcut, function() {
-				console.debug(shortcut, index);
-				win.webContents.send('uploadFile', JSON.stringify({screen: index}));
-			})
-		}
-	} else {
-		var displays = await screenshot.listDisplays();
-		// Fuck, this ain't really pretty huh	
-	globalShortcut.register('CommandOrControl+Shift+1', function() {
-		if (displays[0]) {
-			screenshot({ format: 'png', screen: displays[0].id }).then((img) => {
-				uploadImage(img);
-			});
-		}
-	});
-
-	globalShortcut.register('CommandOrControl+Shift+2', function() {
-		if (displays[1]) {
-			screenshot({ format: 'png', screen: displays[1].id }).then((img) => {
-				uploadImage(img);
-			});
-		}
-	});
-
-	globalShortcut.register('CommandOrControl+Shift+3', function() {
-		if (displays[2]) {
-			screenshot({ format: 'png', screen: displays[2].id }).then((img) => {
-				uploadImage(img);
-			});
-		}
-	});
+		globalShortcut.register(shortcut, function() {
+			console.debug(shortcut, index);
+			win.webContents.send('uploadFile', JSON.stringify({screen: index}));
+		})
 	}
-	
 }
 
 function uploadImage(img) {
