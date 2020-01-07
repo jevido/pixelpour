@@ -1,12 +1,21 @@
-const {clipboard, electron, shell} = require('electron');
+const {clipboard, electron, shell, ipcRenderer} = require('electron');
+var screenCapture = new ScreenCapture();
 // import ScreenCapture from 'ScreenCapture.js';
 const uploadSuccessfullSound = new Audio('assets/misc/snap.mp3');
 
-require('electron').ipcRenderer.on('uploadedFile', function(event, message) {
-	message = JSON.parse(message);
 
-	createUploadedFile(message, {name: message.name});
+ipcRenderer.on('uploadFile', async function (event, message) {
+	message = JSON.parse(message);
+	var file = await screenCapture.getScreenShot(uploadFile, message.screen);
+	// file.name = screenCapture.generateName();
+
+	// uploadFile(file)
 })
+// require('electron').ipcRenderer.on('uploadedFile', function(event, message) {
+// 	message = JSON.parse(message);
+
+// 	createUploadedFile(message, {name: message.name});
+// })
 
 $('body').on('dragover', function(e) {
 	e.preventDefault();
@@ -41,10 +50,13 @@ function uploadFiles(files) {
 	}
 }
 
-function uploadFile(file) {
-	if (typeof file != 'object') return;
+function uploadFile(file, filename) {
+	if (typeof file != 'object' && typeof file != 'string') return;
 	var formData = new FormData();
-	formData.append('file', file);
+	// formData.append('file', file.img, file.name);
+
+	var blob = dataURItoBlob(file);
+	formData.append("file", blob, filename || file.name);
 
 	$.ajax({
 		url : 'https://pixeldrain.com/api/file',
@@ -115,7 +127,6 @@ $('.open-external').on('click', function(ev) {
 })
 
 $(document).ready(async function() {
-	var screenCapture = new ScreenCapture();
 	var screenSources = await screenCapture.getSources();
 	var enumerate = 0;
 	var currentContainer = 0;
@@ -135,3 +146,27 @@ $(document).ready(async function() {
 
 
 // Would be cool, to add windows manually as well, so you can shortcut VS Code for example
+
+
+
+
+
+// As far i could read in a minute, formdata doesnt accept datauri's, so we transform it into a blob
+function dataURItoBlob(dataURI) {
+	// convert base64/URLEncoded data component to raw binary data held in a string
+	var byteString;
+	if (dataURI.split(',')[0].indexOf('base64') >= 0)
+			byteString = atob(dataURI.split(',')[1]);
+	else
+			byteString = unescape(dataURI.split(',')[1]);
+	// separate out the mime component
+	var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+	// write the bytes of the string to a typed array
+	var ia = new Uint8Array(byteString.length);
+	for (var i = 0; i < byteString.length; i++) {
+			ia[i] = byteString.charCodeAt(i);
+	}
+
+	return new Blob([ia], {type:mimeString});
+}

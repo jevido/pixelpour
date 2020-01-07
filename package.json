@@ -9,15 +9,14 @@
     "electron": "^5.0.8",
     "electron-rebuild": "^1.8.6",
     "install": "^0.13.0",
-    "jquery": "^3.4.1",
-    "nexe": "^3.3.2",
-    "screenshot-desktop": "^1.9.0"
+    "jquery": "^3.4.1"
   },
   "bin": "main.js",
   "dependencies": {
+    "store": "^2.0.12"
   },
   "scripts": {
-		"start": "electron .",
+    "start": "electron .",
     "package": "pkg package.json"
   },
   "keywords": [

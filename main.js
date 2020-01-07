@@ -2,6 +2,7 @@ const { app, clipboard, BrowserWindow, Menu, Tray, globalShortcut} = require('el
 const screenshot = require('screenshot-desktop')
 const request = require('request');
 const path = require('path');
+const store = require('store')
 
 const uploadUrl = 'https://pixeldrain.com/api/file';
 let win = null;
@@ -9,6 +10,10 @@ let tray = null;
 
 function onReady() {
 	createTray();
+	
+	if (!store.get('shortcuts')) {
+		setShortcuts();
+	}
 	addListeners();
 	createWindow();
 }
@@ -54,10 +59,31 @@ function createWindow() {
   win.loadFile('index.html')
 }
 
+function setShortcuts() {
+	var defaults = {
+	//'screenname': 'shortcut',
+		'screen:0:0': 'CommandOrControl+Shift+2',
+		'screen:1:0': 'CommandOrControl+Shift+1'
+	};
+	store.set('shortcuts', defaults)
+}
 async function addListeners() {
-	var displays = await screenshot.listDisplays();
-	// Fuck, this ain't really pretty huh
-	
+	if (true) {
+		var shortcuts = store.get('shortcuts');
+		console.debug(shortcuts);
+		// Read the store for which shortcuts to use
+		for (let index in shortcuts) {
+			// Damned variable hoisting
+			let shortcut = shortcuts[index];
+
+			globalShortcut.register(shortcut, function() {
+				console.debug(shortcut, index);
+				win.webContents.send('uploadFile', JSON.stringify({screen: index}));
+			})
+		}
+	} else {
+		var displays = await screenshot.listDisplays();
+		// Fuck, this ain't really pretty huh	
 	globalShortcut.register('CommandOrControl+Shift+1', function() {
 		if (displays[0]) {
 			screenshot({ format: 'png', screen: displays[0].id }).then((img) => {
@@ -80,7 +106,9 @@ async function addListeners() {
 				uploadImage(img);
 			});
 		}
-  });
+	});
+	}
+	
 }
 
 function uploadImage(img) {
