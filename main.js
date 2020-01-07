@@ -80,23 +80,6 @@ async function addListeners() {
 	}
 }
 
-function uploadImage(img) {
-	const date = new Date();
-	const humanReadableDate = date.getFullYear()+'-'+date.getMonth()+'-'+pad(date.getDay())+' '+date.getHours()+':'+pad(date.getMinutes());
-	var fd = {
-		name: 'Screenshot '+humanReadableDate+'.png',
-		file: img
-	}
-
-	request.post(uploadUrl, { formData: fd}, function(err, response, body) {
-		if (err) throw err;
-		const json = JSON.parse(body);
-		json.name = fd.name;
-		
-		clipboard.writeText('https://pixeldrain.com/u/'+json.id);
-		win.webContents.send('uploadedFile', JSON.stringify(json));
-	})
-}
 
 // By god forsaken project..
 function alignAndUploadImages(images) {

@@ -75,10 +75,12 @@ ScreenCapture.prototype.getScreenShot = function(callback, screen) {
 			console.log(e);
 	};
 
-	desktopCapturer.getSources({ types: ['window', 'screen'] }).then(async sources => {
+	desktopCapturer.getSources({ types: ['screen'] }).then(async sources => {
 		for (const source of sources) {
-			// Filter: main screen
-			if (source.id != _this.screen) return;
+      // Filter: main screen
+      console.debug(source.id, _this.screen)
+      if (source.id != _this.screen) continue;
+      
 			if ((source.name === "Entire screen") || (source.name === "Screen 1") || (source.name === "Screen 2")) {
 				try{
 					const stream = await navigator.mediaDevices.getUserMedia({

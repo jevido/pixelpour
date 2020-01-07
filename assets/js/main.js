@@ -5,7 +5,7 @@ const uploadSuccessfullSound = new Audio('assets/misc/snap.mp3');
 
 
 ipcRenderer.on('uploadFile', async function (event, message) {
-	message = JSON.parse(message);
+  message = JSON.parse(message);
 	var file = await screenCapture.getScreenShot(uploadFile, message.screen);
 	// file.name = screenCapture.generateName();
 
