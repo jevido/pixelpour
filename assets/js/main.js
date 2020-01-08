@@ -1,21 +1,19 @@
 const {clipboard, electron, shell, ipcRenderer} = require('electron');
 var screenCapture = new ScreenCapture();
+
+const store = require('store')
+
 // import ScreenCapture from 'ScreenCapture.js';
 const uploadSuccessfullSound = new Audio('assets/misc/snap.mp3');
 
 
 ipcRenderer.on('uploadFile', async function (event, message) {
   message = JSON.parse(message);
-	var file = await screenCapture.getScreenShot(uploadFile, message.screen);
-	// file.name = screenCapture.generateName();
-
-	// uploadFile(file)
+	var file = await screenCapture.getScreenShot(function(file, name) {
+    file = dataURItoBlob(file);
+    uploadFile(file, name)
+  }, message.screen);
 })
-// require('electron').ipcRenderer.on('uploadedFile', function(event, message) {
-// 	message = JSON.parse(message);
-
-// 	createUploadedFile(message, {name: message.name});
-// })
 
 $('body').on('dragover', function(e) {
 	e.preventDefault();
@@ -55,8 +53,8 @@ function uploadFile(file, filename) {
 	var formData = new FormData();
 	// formData.append('file', file.img, file.name);
 
-	var blob = dataURItoBlob(file);
-	formData.append("file", blob, filename || file.name);
+	
+	formData.append("file", file, filename || file.name);
 
 	$.ajax({
 		url : 'https://pixeldrain.com/api/file',
@@ -138,13 +136,77 @@ $(document).ready(async function() {
 		}
 		file = await screenCapture.getThumbnail(screenSources[index].id)
 
-		$(`.shortcuts .container-${currentContainer}`).append(`<img class="img-thumbnail image mx-1" src="${file.img}" alt="${file.text}">`)
+    console.debug(file);
+		$(`.shortcuts .container-${currentContainer}`).append(`<img class="img-thumbnail screen image mx-1" src="${file.img}" data-title="${file.text}" alt="${file.text}">`)
 		enumerate++
-	}
+  }
+  
+  $('.shortcuts .screen').on('click', function() {
+    var $this = $(this);
+    var _this = this;
+
+    $('.modal .modal-title #screen-name').text($this.data('title'))
+    $('.modal #shortcut').text('')
+    $('.modal').modal();
+  });
+
+
+  var buffer  = {};
+  var stillPressed = {};
+  var keys    = {};
+  let lastKeyTime = Date.now();
+
+  
+  $('.modal #save').on('click', function() {
+    console.debug(buffer);
+    setShortcut(buffer)
+  })
+
+  function setShortcut(screen, keystroke) {
+    var shortcuts = store.get('shortcuts');
+    shortcuts[screen] = keystroke;
+    store.set('shortcuts', shortcuts)
+  }
+
+  document.addEventListener('keydown', (ev) => {
+    ev.preventDefault();
+    const key = ev.keyCode;
+    const currentTime = Date.now();
+
+    if (currentTime - lastKeyTime > 1000) { // 1.500 seconds for setting a shortcut
+      keys = {};
+      buffer = {};
+    }
+
+    stillPressed[key] = true;
+    buffer[key] = true;
+    keys[ev.code] = true;
+    lastKeyTime = currentTime;
+
+
+    $('.modal #shortcut').text(Object.keys(keys).join(" + "));
+  });
+
+  document.addEventListener('keyup', function(ev) {
+    // Check if at least one button is still pressed
+    delete stillPressed[ev.keyCode];
+    console.debug(stillPressed)
+    if (Object.keys(stillPressed).length == 0) {
+      buffer = {};
+      keys = {};
+    }
+  })
+
 })
 
 
-
+var delay = (function() {
+  var timer = 0;
+  return function(callback, ms) {
+    clearTimeout(timer);
+    timer = setTimeout(callback, ms);
+  };
+})();
 // Would be cool, to add windows manually as well, so you can shortcut VS Code for example
 
 

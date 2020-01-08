@@ -74,7 +74,6 @@ async function addListeners() {
 		let shortcut = shortcuts[index];
 
 		globalShortcut.register(shortcut, function() {
-			console.debug(shortcut, index);
 			win.webContents.send('uploadFile', JSON.stringify({screen: index}));
 		})
 	}

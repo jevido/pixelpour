@@ -113,21 +113,15 @@
         padding-top: 10px;
       }
 
-      /* ::-webkit-scrollbar{
-        width: 12px; // for vertical scrollbars
-        height: 12px;  // for horizontal scrollbars
+      .popup {
+        background-color: hsl(192, 95.000%, 17.000%);
+        box-shadow: hsl(0, 0.000%, 0.000%) 0px 0px 50px;
+        border-color: hsl(192, 100.000%, 11.000%);
       }
-      ::-webkit-scrollbar-track {background: (hsl(0, 0.000%, 0.000%));}
-      ::-webkit-scrollbar-thumb {
-        background-color: hsl(192, 95.000%, 30.000%);
-        border-radius: 6px;
+      .popup .modal-footer,
+      .popup .modal-header {
+        border-color: hsl(192, 100.000%, 11.000%);
       }
-      ::-webkit-scrollbar-corner{background: var(--scrollbar_background_color);}
-      a       {color: hsl(145, 63.000%, 42.000%); text-decoration: none;}
-      a:hover {color: hsl(145, 63.000%, 42.000%); text-decoration: underline;} */
-
-
-
 
 			::-webkit-scrollbar {
 				width: 1em;
@@ -270,9 +264,31 @@
 			</div>
 		</footer>
 
+
+    <!-- Modal -->
+    <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="popup modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Change hotkey for <span id="screen-name"></span></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Press any key to record a shortcut</p>
+            ><span id="shortcut"></span>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
 		<script>window.$ = window.jQuery = require('jquery');</script>
 		<script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 		<script src="assets/js/ScreenCapture.js"></script>
-		<script src="assets/js/main.js"></script>
+    <script src="assets/js/main.js"></script>
 	</body>
 </html>
