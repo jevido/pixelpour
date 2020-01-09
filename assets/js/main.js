@@ -53,8 +53,10 @@ function uploadFile(file, filename) {
 	var formData = new FormData();
 	// formData.append('file', file.img, file.name);
 
-	
-	formData.append("file", file, filename || file.name);
+	if (filename) {
+		file.name = filename;
+	}
+	formData.append("file", file);
 
 	$.ajax({
 		url : 'https://pixeldrain.com/api/file',
@@ -136,7 +138,6 @@ $(document).ready(async function() {
 		}
 		file = await screenCapture.getThumbnail(screenSources[index].id)
 
-    console.debug(file);
 		$(`.shortcuts .container-${currentContainer}`).append(`<img class="img-thumbnail screen image mx-1" src="${file.img}" data-title="${file.text}" alt="${file.text}">`)
 		enumerate++
   }
@@ -150,7 +151,6 @@ $(document).ready(async function() {
     $('.modal').modal();
   });
 
-
   var buffer  = {};
   var stillPressed = {};
   var keys    = {};
@@ -158,7 +158,6 @@ $(document).ready(async function() {
 
   
   $('.modal #save').on('click', function() {
-    console.debug(buffer);
     setShortcut(buffer)
   })
 
@@ -169,7 +168,7 @@ $(document).ready(async function() {
   }
 
   document.addEventListener('keydown', (ev) => {
-    ev.preventDefault();
+    // ev.preventDefault();
     const key = ev.keyCode;
     const currentTime = Date.now();
 
@@ -190,7 +189,6 @@ $(document).ready(async function() {
   document.addEventListener('keyup', function(ev) {
     // Check if at least one button is still pressed
     delete stillPressed[ev.keyCode];
-    console.debug(stillPressed)
     if (Object.keys(stillPressed).length == 0) {
       buffer = {};
       keys = {};

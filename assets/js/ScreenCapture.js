@@ -51,7 +51,6 @@ ScreenCapture.prototype.getScreenShot = function(callback, screen) {
 					// Draw video on canvas
 					ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-
 					if (_this.callback) {
 							// Save screenshot to base64
 							_this.callback(canvas.toDataURL(imageFormat), _this.generateName());
