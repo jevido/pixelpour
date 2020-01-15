@@ -77,10 +77,8 @@ ScreenCapture.prototype.getScreenShot = function(callback, screen) {
 	desktopCapturer.getSources({ types: ['screen'] }).then(async sources => {
 		for (const source of sources) {
       // Filter: main screen
-      console.debug(source.id, _this.screen)
       if (source.id != _this.screen) continue;
       
-			if ((source.name === "Entire screen") || (source.name === "Screen 1") || (source.name === "Screen 2")) {
 				try{
 					const stream = await navigator.mediaDevices.getUserMedia({
 						audio: false,
@@ -99,14 +97,13 @@ ScreenCapture.prototype.getScreenShot = function(callback, screen) {
 				} catch (e) {
 					_this.handleError(e);
 				}
-			}
 		}
 	});
 }
 
 ScreenCapture.prototype.generateName = function() {
 	var date = new Date()
-	return 'Screenshot '+ date.getFullYear()+'-'+date.getMonth()+'-'+pad(date.getDay())+' '+date.getHours()+':'+pad(date.getMinutes())+ '.png';
+	return `Screenshot ${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())} ${date.getHours()}:${pad(date.getMinutes())}.png`;
 }
 
 ScreenCapture.prototype.addSource = function(source) {
