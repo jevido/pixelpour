@@ -56,7 +56,7 @@ function uploadFile(file, filename) {
 	if (filename) {
 		file.name = filename;
 	}
-	formData.append("file", file);
+	formData.append("file", file, filename);
 
 	$.ajax({
 		url : 'https://pixeldrain.com/api/file',
@@ -65,6 +65,7 @@ function uploadFile(file, filename) {
 		processData: false,  // tell jQuery not to process the data
 		contentType: false,  // tell jQuery not to set contentType
 		success : function(data) {
+			data = JSON.parse(data);
 			const lastUrl = 'https://pixeldrain.com/u/'+data.id;
 			clipboard.writeText(lastUrl);
 			createUploadedFile(data, file);
@@ -76,6 +77,7 @@ function createUploadedFile(data, file) {
 	file = file || {};
 	const date = new Date();
 	const fileName = file.name || data.id;
+
 	const lastUrl = 'https://pixeldrain.com/u/'+data.id;
 	const thumbnail = 'https://pixeldrain.com/api/file/'+data.id+'/thumbnail';
 	const time = +date.getHours()+':'+pad(date.getMinutes())
@@ -104,7 +106,6 @@ function createUploadedFile(data, file) {
 }
 
 function pad(digit) {	return digit < 10 ? '0'+digit:digit; }
-
 
 function newBrowserWindow(url, options) {
 	const { BrowserWindow } = require('electron').remote;
@@ -162,7 +163,7 @@ $(document).ready(async function() {
   })
 
   function setShortcut(screen, keystroke) {
-    var shortcuts = store.get('shortcuts');
+		var shortcuts = store.get('shortcuts');
     shortcuts[screen] = keystroke;
     store.set('shortcuts', shortcuts)
   }
@@ -172,7 +173,7 @@ $(document).ready(async function() {
     const key = ev.keyCode;
     const currentTime = Date.now();
 
-    if (currentTime - lastKeyTime > 1000) { // 1.500 seconds for setting a shortcut
+    if (currentTime - lastKeyTime > 1000) { // 1 seconds for setting a shortcut
       keys = {};
       buffer = {};
     }
@@ -181,7 +182,6 @@ $(document).ready(async function() {
     buffer[key] = true;
     keys[ev.code] = true;
     lastKeyTime = currentTime;
-
 
     $('.modal #shortcut').text(Object.keys(keys).join(" + "));
   });
