@@ -6,7 +6,6 @@ const store = require('store')
 // import ScreenCapture from 'ScreenCapture.js';
 const uploadSuccessfullSound = new Audio('assets/misc/snap.mp3');
 
-
 ipcRenderer.on('uploadFile', async function (event, message) {
   message = JSON.parse(message);
 	var file = await screenCapture.getScreenShot(function(file, name) {
@@ -139,7 +138,7 @@ $(document).ready(async function() {
 		}
 		file = await screenCapture.getThumbnail(screenSources[index].id)
 
-		$(`.shortcuts .container-${currentContainer}`).append(`<img class="img-thumbnail screen image mx-1" src="${file.img}" data-title="${file.text}" alt="${file.text}">`)
+		$(`.shortcuts .container-${currentContainer}`).append(`<div class="card"><img class="card-img-top screen" src="${file.img}" data-title="${file.text}" alt="${file.text}"><h5 class="card-title text-white">${file.text}</h5></div>`)
 		enumerate++
   }
   
@@ -206,8 +205,6 @@ var delay = (function() {
   };
 })();
 // Would be cool, to add windows manually as well, so you can shortcut VS Code for example
-
-
 
 
 
