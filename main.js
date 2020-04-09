@@ -1,13 +1,14 @@
-const { app, clipboard, BrowserWindow, Menu, Tray, globalShortcut} = require('electron')
+const { app, clipboard, ipcMain, BrowserWindow, Menu, Tray, globalShortcut} = require('electron')
 const request = require('request');
 const path = require('path');
-const store = require('store')
+const Store = require('electron-store')
 
-const uploadUrl = 'https://pixeldrain.com/api/file';
+const store = new Store();
 let win = null;
 let tray = null;
 
 function onReady() {
+	console.debug('test', app.getPath('userData'));
 	createTray();
 	
 	if (!store.get('shortcuts')) {
@@ -66,8 +67,10 @@ function setShortcuts() {
 	};
 	store.set('shortcuts', defaults)
 }
+
 async function addListeners() {
 	var shortcuts = store.get('shortcuts');
+	
 	// Read the store for which shortcuts to use
 	for (let index in shortcuts) {
 		// Damned variable hoisting
@@ -79,6 +82,32 @@ async function addListeners() {
 	}
 }
 
+ipcMain.on('set-keystrokes', (event, data) => {
+	let shortcuts = store.get('shortcuts');
+	let json = JSON.parse(data);
+	let keyStroke = Object.keys(json.keyStroke).join("+");
+	keyStroke = keyStroke.replace('ControlLeft', 'Ctrl');
+	keyStroke = keyStroke.replace('ControlRight', 'Ctrl');
+	keyStroke = keyStroke.replace('MetaLeft', 'Cmd');
+	keyStroke = keyStroke.replace('MetaRight', 'Cmd');
+	keyStroke = keyStroke.replace('AltLeft', 'Alt');
+	keyStroke = keyStroke.replace('AltRight', 'Alt');
+	keyStroke = keyStroke.replace('ShiftLeft', 'Shift');
+	keyStroke = keyStroke.replace('ShiftRight', 'Shift');
+	keyStroke = keyStroke.replace('Digit', '');
+	keyStroke = keyStroke.replace('Key', '');
+	
+	shortcuts[json.screen] = keyStroke
+	store.set('shortcuts', shortcuts);
+})
+
+ipcMain.on('set-state-keystrokes', (event, state) => {
+	globalShortcut.unregisterAll();
+
+	if (state == 'on') {
+		addListeners();
+	}
+});
 
 // By god forsaken project..
 function alignAndUploadImages(images) {

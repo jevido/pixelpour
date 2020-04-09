@@ -3,13 +3,13 @@
   "version": "0.3.0",
   "description": "Create screenshots and such and upload it to pixeldrain",
   "main": "main.js",
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "bin": "main.js",
   "dependencies": {
-    "electron": "^5.0.8",
     "bootstrap": "^4.3.1",
     "delay": "^4.3.0",
+    "electron": "^5.0.8",
+    "electron-store": "^5.1.1",
     "install": "^0.13.0",
     "jquery": "^3.4.1",
     "store": "^2.0.12"

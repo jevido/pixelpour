@@ -162,8 +162,13 @@ section, footer {
 .shortcuts .d-block .card {
 	display: inline-block;
 	margin: 0.5rem;
-	background-color: transparent;
+	background-color: var(--accent_color_light);
+	border-bottom-left-radius: 6px;
+	border-bottom-right-radius: 6px;
 }
 .shortcuts .d-block .card .card-img-top {
 	height: 120px;
+}
+.shortcuts .d-block .card .card-title {
+	margin-top: .3rem;
 }

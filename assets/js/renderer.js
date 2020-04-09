@@ -1,7 +1,8 @@
-const {clipboard, electron, shell, ipcRenderer} = require('electron');
+const {clipboard , electron, shell, ipcRenderer, globalShortcut} = require('electron');
 var screenCapture = new ScreenCapture();
 
-const store = require('store')
+const Store = require('electron-store')
+const store = new Store();
 
 // import ScreenCapture from 'ScreenCapture.js';
 const uploadSuccessfullSound = new Audio('assets/misc/snap.mp3');
@@ -127,9 +128,15 @@ $('.open-external').on('click', function(ev) {
 })
 
 $(document).ready(async function() {
-	var screenSources = await screenCapture.getSources();
-	var enumerate = 0;
-	var currentContainer = 0;
+	let screenSources = await screenCapture.getSources();
+	let enumerate = 0;
+	let currentContainer = 0;
+	let buffer  = {};
+  let stillPressed = {};
+  let keys    = {};
+	let lastKeyTime = Date.now();
+	let lastKeyStroke = {};
+	let currentScreen = null;
 
 	for (var index in screenSources) {
 		if (enumerate % 3 == 0) {
@@ -138,34 +145,39 @@ $(document).ready(async function() {
 		}
 		file = await screenCapture.getThumbnail(screenSources[index].id)
 
-		$(`.shortcuts .container-${currentContainer}`).append(`<div class="card"><img class="card-img-top screen" src="${file.img}" data-title="${file.text}" alt="${file.text}"><h5 class="card-title text-white">${file.text}</h5></div>`)
+		$(`.shortcuts .container-${currentContainer}`).append(`<div class="card"><img class="card-img-top screen" src="${file.img}" data-title="${file.text}" data-id="${file.id}" alt="${file.text}"><h5 class="card-title text-white">${file.text}</h5></div>`)
 		enumerate++
   }
-  
-  $('.shortcuts .screen').on('click', function() {
-    var $this = $(this);
-    var _this = this;
 
-    $('.modal .modal-title #screen-name').text($this.data('title'))
-    $('.modal #shortcut').text('')
+	$('.shortcuts .screen').on('click', function() {
+    var $this = $(this);
+    let shortcuts = store.get('shortcuts');
+		currentScreen = $this.data('id');
+
+		$('.modal .modal-title #screen-name').text($this.data('title'))
+    $('.modal #shortcut').text(shortcuts[currentScreen])
     $('.modal').modal();
   });
 
-  var buffer  = {};
-  var stillPressed = {};
-  var keys    = {};
-  let lastKeyTime = Date.now();
-
-  
   $('.modal #save').on('click', function() {
-    setShortcut(buffer)
-  })
+		if (Object.keys(lastKeyStroke).length > 0) {
+			ipcRenderer.send('set-keystrokes', JSON.stringify({screen: currentScreen, keyStroke: lastKeyStroke}));
+			$('.modal').modal('hide');
+		}
+	})
+	
+	// Messily disable current shortcuts, so you have at least some freedom is settings keystrokes
+	$('.modal').on('shown.bs.modal', function () {
+		// Disable global keystrokes
+		lastKeyStroke = {}
+		ipcRenderer.send('set-state-keystrokes', 'off');
+	});
 
-  function setShortcut(screen, keystroke) {
-		var shortcuts = store.get('shortcuts');
-    shortcuts[screen] = keystroke;
-    store.set('shortcuts', shortcuts)
-  }
+	$('.modal').on('hidden.bs.modal', function() {
+		// Enable global keystrokes
+		ipcRenderer.send('set-state-keystrokes', 'on');
+	});
+
 
   document.addEventListener('keydown', (ev) => {
     // ev.preventDefault();
@@ -174,13 +186,15 @@ $(document).ready(async function() {
 
     if (currentTime - lastKeyTime > 1000) { // 1 seconds for setting a shortcut
       keys = {};
-      buffer = {};
+			buffer = {};
+			lastKeyStroke = {};
     }
 
     stillPressed[key] = true;
     buffer[key] = true;
     keys[ev.code] = true;
-    lastKeyTime = currentTime;
+		lastKeyTime = currentTime;
+		lastKeyStroke = keys;
 
     $('.modal #shortcut').text(Object.keys(keys).join(" + "));
   });
@@ -204,8 +218,8 @@ var delay = (function() {
     timer = setTimeout(callback, ms);
   };
 })();
-// Would be cool, to add windows manually as well, so you can shortcut VS Code for example
 
+// Would be cool, to add windows manually as well, so you can shortcut VS Code for example
 
 
 // As far i could read in a minute, formdata doesnt accept datauri's, so we transform it into a blob
