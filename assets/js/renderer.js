@@ -1,4 +1,4 @@
-const {clipboard , electron, shell, ipcRenderer, globalShortcut} = require('electron');
+const {clipboard , remote, shell, ipcRenderer, globalShortcut} = require('electron');
 var screenCapture = new ScreenCapture();
 
 const Store = require('electron-store')
@@ -149,6 +149,11 @@ $(document).ready(async function() {
 		enumerate++
   }
 
+	$('#close').on('click', function(ev) {
+		var window = remote.getCurrentWindow();
+		window.close();
+	})
+
 	$('.shortcuts .screen').on('click', function() {
     var $this = $(this);
     let shortcuts = store.get('shortcuts');
@@ -177,7 +182,6 @@ $(document).ready(async function() {
 		// Enable global keystrokes
 		ipcRenderer.send('set-state-keystrokes', 'on');
 	});
-
 
   document.addEventListener('keydown', (ev) => {
     // ev.preventDefault();

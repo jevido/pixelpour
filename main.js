@@ -7,37 +7,32 @@ const store = new Store();
 let win = null;
 let tray = null;
 
-function onReady() {
-	console.debug('test', app.getPath('userData'));
-	createTray();
-	
+function onReady() {	
 	if (!store.get('shortcuts')) {
 		setShortcuts();
 	}
 	addListeners();
 	createWindow();
+	createTray();
+
 }
 
 function createTray() {
 	tray = new Tray('assets/images/icon.ico');
 	const contextMenu = Menu.buildFromTemplate([
-		{label: 'Open', type: 'radio', click: openWindow},
-		{label: 'Exit', type: 'radio', click: app.quit}
+		{label: 'Open', click: openWindow},
+		{label: 'Exit', click: function() {
+			win.isQuitting = true;
+			win.close()
+		}}
 	]);
 	tray.setToolTip('PixelPour!');
 	tray.setContextMenu(contextMenu);
 	tray.on('double-click', openWindow);
 }
 
-function openWindow () {
-	if (win) {
-		if (win.isMinimized()) {
-			win.restore();
-		}
-		win.focus();
-	} else {
-		createWindow();
-	}
+function openWindow() {
+	win.show();
 }
 
 function createWindow() {
@@ -46,12 +41,28 @@ function createWindow() {
 		width: 1200,
 		height: 800,
 		backgroundColor: '#0d0d0d',
-		// frame: false,
+		frame: false,
+		transparent: true,
 		icon: path.join(__dirname, 'assets/images/icon.ico'),
 		// alwaysOnTop: true,
 		autoHideMenuBar: true,
 		webPreferences: {
 			nodeIntegration: true
+		}
+	});
+
+	win.on('minimize',function(event){
+    event.preventDefault();
+    win.minimize();
+	});
+
+	win.on('close', function (event) {
+		if (process.platform == 'win32' || process.platform == 'darwin') {
+			if(!win.isQuitting){
+				event.preventDefault();
+				win.hide();
+				return false;
+			}
 		}
 	});
 
@@ -62,8 +73,8 @@ function createWindow() {
 function setShortcuts() {
 	var defaults = {
 	//'screenname': 'shortcut',
-		'screen:0:0': 'CommandOrControl+Shift+2',
-		'screen:1:0': 'CommandOrControl+Shift+1'
+		'screen:0:0': 'CommandOrControl+Shift+1',
+		'screen:1:0': 'CommandOrControl+Shift+2'
 	};
 	store.set('shortcuts', defaults)
 }
