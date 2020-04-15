@@ -24,7 +24,7 @@ switch (process.platform) {
 	// case 'openbsd':
 	// case 'linux':
 	default:
-		icon = 'assets/images/png/256x256.png'
+		icon = 'assets/images/icons/png/256x256.png'
 }
 
 
