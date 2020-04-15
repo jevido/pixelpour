@@ -24,7 +24,7 @@ But since people are lazy, basically nothing is done with your file, you get an 
 
 **So what is PixelPour?** 
 
-PixelPour is a quickly made (not counting all the breaks i had in this project), screen &amp; file sharing platform. Completely depending on his great API and platform. Honestly i'm a big fan if you hadn't noticed.  
+PixelPour is a quickly made (not counting all the breaks i had in this project), screen &amp; file sharing platform. Completely depending on PixelDrain's great API and platform. Honestly i'm a big fan if you hadn't noticed.  
 It's made with the "if it's dirty code, just take a shower afterwards" mentality. So don't mind sending a dirty pull request. Or make it cleaner for all i care.  
 The idea behind this app was, i don't like having to open to many web based apps in my browser, like gMail and Jira, but i do want to quickly upload a file, or make a screenshot to send to coworkers or friends. Therefor i "hatsaflats'd" (not a clue what that is in english, i'm dutch) this project, and called it a day. Found out i kinda like working on this project, so now we're here.  
 Why is it called "light" in the client, because i want to make a major version, with automatic updaters, and just keep it simple. Some day i want to create a "pro" version with more advanced options, like having an account, deleting files, having theme options. But that is still far from home.  

@@ -1,7 +1,7 @@
 {
   "name": "pixelpour",
   "version": "0.5.1",
-  "description": "Create screenshots and such and upload it to pixeldrain",
+  "description": "Create screenshots & files and upload it to pixeldrain",
   "main": "main.js",
   "devDependencies": {},
   "bin": "main.js",
