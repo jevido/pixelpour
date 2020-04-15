@@ -56,6 +56,7 @@ So ehh, atm i don't have much time to work on this project, because either i'm t
 
 I don't really have the time to fix all the problems, but here is a list of bugs i'm aware of:
 - Multiple monitor setup on linux, displays all screens into single "Entire screen" [bug report](https://bugs.chromium.org/p/chromium/issues/detail?id=396091)
+- Not sure why, but after packaging you should copy-paste the assets folder inside the build dir
 
 ## Contributing
 
