@@ -1,8 +1,13 @@
 <h1 align="center">PixelPour</h1>
 
 <div align="center">
-	![](https://raw.githubusercontent.com/jevido/pixelpour/master/screenshot.png)
+	
+![Screenshot of PixelPour](https://raw.githubusercontent.com/jevido/pixelpour/master/screenshot.png)
+
 </div>
+
+
+
 ## Features
 
 - Create screenshots based on screens (windows & cropped images are in the future)
