@@ -42,7 +42,6 @@
 body {
 	background-color: var(--background_color);
 	color: var(--text_color);
-	border-radius: 5px;
 }
 header {
 	background-color: var(--accent_color_headerbar)
@@ -162,11 +161,6 @@ footer {
 }
 ::-webkit-scrollbar-corner {
 	background: hsl(0, 0.000%, 0.000%)
-}
-main {
-	/* min-height: calc(100vh - 120px); */
-	/* height: 100%; */
-	/* overflow-y: hidden; */
 }
 .uploaded-files {
 	/* height: -webkit-fill-available; */

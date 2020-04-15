@@ -14,7 +14,6 @@ function onReady() {
 	addListeners();
 	createWindow();
 	createTray();
-
 }
 
 function createTray() {
