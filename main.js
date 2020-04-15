@@ -6,6 +6,28 @@ const Store = require('electron-store')
 const store = new Store();
 let win = null;
 let tray = null;
+let icon;
+
+
+
+// Set an icon based on OS
+switch (process.platform) {
+	case 'win32':
+		icon = 'icon.ico';
+		break;
+	case 'darwin':
+		icon = 'assets/images/icons/mac/icon.icns'
+		break;
+	// case 'sunos':
+	// case 'freebsd':
+	// case 'aix':
+	// case 'openbsd':
+	// case 'linux':
+	default:
+		icon = 'assets/images/png/256x256.png'
+}
+
+
 
 function onReady() {	
 	if (!store.get('shortcuts')) {
@@ -17,7 +39,7 @@ function onReady() {
 }
 
 function createTray() {
-	tray = new Tray('assets/images/icon.ico');
+	tray = new Tray(icon);
 	const contextMenu = Menu.buildFromTemplate([
 		{label: 'Open', click: openWindow},
 		{label: 'Exit', click: function() {
@@ -35,6 +57,8 @@ function openWindow() {
 }
 
 function createWindow() {
+
+	
 	// Create the browser window.
 	win = new BrowserWindow({
 		width: 1200,
@@ -42,7 +66,7 @@ function createWindow() {
 		backgroundColor: '#0d0d0d',
 		frame: false,
 		transparent: true,
-		icon: path.join(__dirname, 'assets/images/icon.ico'),
+		icon: path.join(__dirname, icon),
 		// alwaysOnTop: true,
 		autoHideMenuBar: true,
 		webPreferences: {
