@@ -9,6 +9,7 @@
 
     <!-- Bootstrap core CSS -->
 		<link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+		<link href="assets/css/progressbars.css" rel="stylesheet">	
 		<link href="assets/css/layout.css" rel="stylesheet">	
 	</head>
   <body class="fornax">
@@ -19,7 +20,7 @@
 						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true" class="mr-2" viewBox="0 0 24 24" focusable="false"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
 						<strong>PixelPour! </strong><small>&nbsp;- Light</small>
 					</a>
-					<div class="form-inline">
+					<div class="form-inline buttons">
 						<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
 							<span class="navbar-toggler-icon"></span>
 						</button>
@@ -89,7 +90,7 @@
 
 			<div class="body-color uploaded-files py-5">
 				<div class="container">
-					<div class="row" id="uploaded-files">
+					<div class="card-deck" id="uploaded-files">
 						<!-- Here goes the uploaded files-->
 
 					</div>
@@ -106,7 +107,6 @@
 					Medium:&nbsp;<a href="https://medium.com/pixeldrain" class="open-external" target="_blank">Pixeldrain</a></p>
 			</div>
 		</footer>
-
 
     <!-- Modal -->
     <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
@@ -128,7 +128,8 @@
           </div>
         </div>
       </div>
-    </div>
+		</div>
+
 		<script>window.$ = window.jQuery = require('jquery');</script>
 		<script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 		<script src="assets/js/ScreenCapture.js"></script>

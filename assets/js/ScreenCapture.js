@@ -24,6 +24,7 @@ ScreenCapture.prototype.getThumbnail = async function(id) {
 	return sources[id];
 }
 
+
 ScreenCapture.prototype.getScreenShot = function(callback, screen) {
 	var _this = this;
 	_this.callback = callback;

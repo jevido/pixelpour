@@ -9,11 +9,10 @@ let tray = null;
 let icon;
 
 
-
 // Set an icon based on OS
 switch (process.platform) {
 	case 'win32':
-		icon = 'icon.ico';
+		icon = 'assets/images/icons/icon.ico';
 		break;
 	case 'darwin':
 		icon = 'assets/images/icons/mac/icon.icns'
@@ -26,8 +25,6 @@ switch (process.platform) {
 	default:
 		icon = 'assets/images/icons/png/256x256.png'
 }
-
-
 
 function onReady() {	
 	if (!store.get('shortcuts')) {
@@ -57,8 +54,6 @@ function openWindow() {
 }
 
 function createWindow() {
-
-	
 	// Create the browser window.
 	win = new BrowserWindow({
 		width: 1200,

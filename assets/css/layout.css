@@ -40,18 +40,30 @@
 
 /* Overwrite bootstrap styles */
 body {
+	height: 100vh;
 	background-color: var(--background_color);
 	color: var(--text_color);
 }
 header {
 	background-color: var(--accent_color_headerbar)
 }
-.navbar { 
+.navbar {
 	-webkit-app-region: drag;
+}
+.navbar .container {
+	margin-left: 0px;
+	margin-right: 0px;
+}
+.navbar .buttons {
+	right: 30px;
+	position: absolute;
 }
 .navbar button,  
 .navbar a { 
 	-webkit-app-region: no-drag;
+}
+.navbar button:focus {
+	outline: none !important;
 }
 
 .btn.btn-outline {
@@ -71,10 +83,6 @@ header {
 .btn-close span {
 	display: block;
 	margin-top: -5px; /* You hate me, i hate css, deal with it */
-}
-
-.navbar button:focus {
-	outline: none !important;
 }
 
 a {color: var(--highlight_color)}
@@ -175,19 +183,22 @@ section, footer {
 	opacity: 0.9;
 }
 
-#uploaded-files .col-md-4 .card {
+.uploaded-files .btn-group {
+	width: 100%;
+}
+.uploaded-files .btn-group .btn {
+	color: var(--text_color);
+}
+#uploaded-files h5 {
+	font-size: 16px;
+}
+
+#uploaded-files .card {
 	opacity: 0.9;
-	color: white;
+	color: var(--cyan);
 	background: var(--accent_color_dark);
-	padding: 4px;
-	border-radius: 5px;
 }
-.card {
-	width: 14rem;
-}
-.card-text {
-	color: #ffffff;
-}
+
 .shortcuts .d-block .card {
 	display: inline-block;
 	margin: 0.5rem;
@@ -200,4 +211,44 @@ section, footer {
 }
 .shortcuts .d-block .card .card-title {
 	margin-top: .3rem;
+}
+
+.card-deck {
+  margin: 0 -15px;
+  justify-content: center;
+}
+
+.card-deck .card {
+	margin-bottom: 2rem;
+}
+
+/* Background-image is set with js to a base64 url */
+.card-deck .card-img-top {
+	width: 100%;
+	height: 120px;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .card-deck .card {
+    -ms-flex: 0 0 48.7%;
+    flex: 0 0 48.7%;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .card-deck .card {
+    -ms-flex: 0 0 32%;
+    flex: 0 0 32%;
+  }
+}
+
+@media (min-width: 992px)
+{
+  .card-deck .card {
+    -ms-flex: 0 0 24%;
+    flex: 0 0 24%;
+  }
 }
