@@ -207,7 +207,8 @@ section, footer {
 	border-bottom-right-radius: 6px;
 }
 .shortcuts .d-block .card .card-img-top {
-	height: 120px;
+  height: 120px;
+  width: auto;
 }
 .shortcuts .d-block .card .card-title {
 	margin-top: .3rem;
