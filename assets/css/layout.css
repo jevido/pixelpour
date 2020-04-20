@@ -208,6 +208,7 @@ section, footer {
 }
 .shortcuts .d-block .card .card-img-top {
 	height: 120px;
+	width: 180px;
 }
 .shortcuts .d-block .card .card-title {
 	margin-top: .3rem;
