@@ -278,11 +278,12 @@ PixelHandler.prototype.addScreensToScreen = async function() {
 	let screens = await this.screenManager.getSources();
 	let enumerate = 0;
 
-	screens[2] = {
+
+	screens.push({
 		img: screens[0].img,
 		text: 'Edit mode',
 		id: 'edit'
-	}
+	});
 
 	if (screens) {
 		for (let index in screens) {
