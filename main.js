@@ -1,5 +1,4 @@
-const { app, clipboard, ipcMain, BrowserWindow, Menu, Tray, globalShortcut} = require('electron')
-const request = require('request');
+const { app, ipcMain, BrowserWindow, Menu, Tray, globalShortcut} = require('electron')
 const path = require('path');
 const Store = require('electron-store')
 
@@ -92,7 +91,8 @@ function setShortcuts() {
 	var defaults = {
 	//'screenname': 'shortcut',
 		'screen:0:0': 'CommandOrControl+Shift+1',
-		'screen:1:0': 'CommandOrControl+Shift+2'
+		'screen:1:0': 'CommandOrControl+Shift+2',
+		'edit':				'CommandOrControl+Shift+4'
 	};
 	store.set('shortcuts', defaults)
 }
@@ -106,7 +106,7 @@ async function addListeners() {
 		let shortcut = shortcuts[index];
 
 		globalShortcut.register(shortcut, function() {
-			win.webContents.send('uploadFile', JSON.stringify({screen: index}));
+			win.webContents.send('keystroke', JSON.stringify({screen: index}));
 		})
 	}
 }

@@ -1,5 +1,5 @@
-const {clipboard , remote, shell, ipcRenderer} = require('electron');
-const { BrowserWindow } = require('electron').remote;
+const { clipboard , remote, shell, ipcRenderer } = require('electron');
+const { BrowserWindow, screen } = require('electron').remote;
 
 
 let { ApiManager } = require('./assets/js/things/ApiManager.js');
@@ -29,7 +29,6 @@ PixelHandler.prototype.addEventHandlers = function() {
 	let lastKeyTime = Date.now();
 	let lastKeyStroke = {};
 	let currentScreen = null;
-	let fileID = 0;
 	
 	$('#close').on('click', function(ev) {
 		var window = remote.getCurrentWindow();
@@ -134,15 +133,7 @@ PixelHandler.prototype.addEventHandlers = function() {
     }
 	})
 
-	ipcRenderer.on('uploadFile', async (ev, data) => {
-		data = JSON.parse(data);
-
-		// Make a screenshot since this can only be executed from the renderer process
-		let file = await this.screenManager.makeScreenshot(data.screen);
-		let blob = dataURIToBlob(file.img);
-
-		_this.uploadFile(file, blob)
-	});
+	ipcRenderer.on('keystroke', (ev, data) => { _this.onKeyStroke(ev, data) } );
 
 	$('.open-external').on('click', function(ev) {
 		ev.preventDefault();
@@ -150,11 +141,66 @@ PixelHandler.prototype.addEventHandlers = function() {
 	})
 }
 
+PixelHandler.prototype.onKeyStroke = async function(ev, data) {
+	let _this = this;
+	data = JSON.parse(data);
+
+	if (data.screen == 'edit') {
+		let cursor = screen.getCursorScreenPoint();
+		let display = screen.getDisplayNearestPoint({x: cursor.x, y: cursor.y});
+
+		let sources = await desktopCapturer.getSources({
+			types: ['screen'],
+			thumbnailSize: {
+				width: display.bounds.width,
+				height: display.bounds.height
+			}
+		});
+
+		if (sources) {
+			for (let index in sources) {
+				let source = sources[index];
+				if (display.id == sources[index].display_id) {					
+					let image = source.thumbnail.toDataURL();
+
+					browserwindow = new BrowserWindow({
+						fullscreen: true,
+						frame: false,
+						resizable: true,
+						alwaysOnTop: true,
+						webPreferences: {
+							nodeIntegration: true
+						}
+					});
+
+					browserwindow.setPosition(display.workArea.x, display.workArea.y)
+					browserwindow.center();
+					
+					browserwindow.loadURL(`file://${__dirname}/assets/js/things/edit/edit.html`);
+					browserwindow.webContents.once('dom-ready', function() {
+						browserwindow.webContents.send('file', image);
+						browserwindow.webContents.on('ipc-message', (ev, key, file) => {
+							_this.uploadFile({
+								title: 'croppy.jpg',
+							}, dataURIToBlob(file))
+						})
+
+					})
+
+				}
+			}
+		}
+
+	} else {
+		// Make a screenshot since this can only be executed from the renderer process
+		let file = await this.screenManager.makeScreenshot(data.screen);
+		let blob = dataURIToBlob(file.img);
+		this.uploadFile(file, blob)
+	}
+}
+
 PixelHandler.prototype.uploadFile = async function(data, file) {
 	let _this = this;
-	// data = JSON.parse(data);
-
-
 	this.fileID++;
 
 	data.img = data.img || '';
@@ -169,11 +215,13 @@ PixelHandler.prototype.uploadFile = async function(data, file) {
 	};
 
 	let onFinish = function(uploadID, data) {
-		$(`.uploaded-files #file-${uploadID} .card-img-top`).attr('style', `background-image: url('${data.thumbnail}')`);
-		// $(`.uploaded-files #file-${uploadID} .card-img-top`).css({
-		// 	'background-image': data.thumbnail
-		// });
-		console.debug(data.thumbnail)
+		// Preload image before trying to display
+		let image = new Image();
+		image.src = data.thumbnail;
+		image.onload = () => {
+			$(`.uploaded-files #file-${uploadID} .card-img-top`).attr('style', `background-image: url('${image.src}')`);
+		}
+
 		let html = `
 			<div class="btn-group">
 				<a class="btn btn-sm btn-outline-secondary" onclick="newBrowserWindow('${data.url}')">View</a>
@@ -229,6 +277,12 @@ PixelHandler.prototype.createShortcutContainer = function(enumerate) {
 PixelHandler.prototype.addScreensToScreen = async function() {
 	let screens = await this.screenManager.getSources();
 	let enumerate = 0;
+
+	screens[2] = {
+		img: screens[1].img,
+		text: 'Edit mode',
+		id: 'edit'
+	}
 
 	if (screens) {
 		for (let index in screens) {

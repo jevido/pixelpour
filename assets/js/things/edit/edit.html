@@ -1,0 +1,51 @@
+<html>
+	<head>
+		<link  href="cropper.min.css" rel="stylesheet">
+
+		<style>
+			html, body {
+				margin: 0 !important;
+ 				padding: 0 !important;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!-- width and height are resolution -->
+		<canvas id="speed"></canvas>
+		<script src="cropper.min.js"></script>
+
+		<script>
+			let { ipcRenderer, remote } = require('electron');
+			let cropper = null;
+			// Done on dom-ready
+			ipcRenderer.on('file', (ev, data) => {
+				let image = new Image();
+				image.onload = () => {
+					let canvas 	= document.getElementById('speed');
+					// resize canvas to optimal resolution
+					canvas.width = image.width;
+					canvas.height = image.height;
+					
+					let ctx 		= canvas.getContext('2d');
+					ctx.drawImage(image,0,0)
+					cropper = new Cropper(canvas, {
+						autoCrop: false,
+						viewMode: 0
+					});
+				}
+				image.src = data;
+
+				document.addEventListener('keyup', function(ev) {
+					if (ev.keyCode == 13) {
+						let cropped = cropper.getCroppedCanvas();
+						let image = cropped.toDataURL();
+						ipcRenderer.send('upload', image)
+						remote.getCurrentWindow().close();
+					}
+				})
+			})
+		</script>
+	
+	</body>
+</html>

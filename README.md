@@ -50,7 +50,7 @@ npm run package
 So ehh, atm i don't have much time to work on this project, because either i'm tired or lazy. But there are still some things i want to get started with:
 - Cropped images, pressing a keystroke, then selecting a square on your screen to make a cropped image
 - Having the option to screenshot your current window, or a pre-selected window like "VS Code"
-- Actual progressbars, and an option to re-upload in case something went wrong
+- Actual progressbars (DONE), and an option to re-upload in case something went wrong
 
 ## Works as designed
 
@@ -65,3 +65,4 @@ Any kind of help is welcome here, below are some examples which i appreciate:
 - Use PixelDrain in your daily work. I don't care about PixelPour. Support him instead
 - Submit [issues](http://github.com/jevido/pixelpour/issues) to report bugs or ask questions.
 - Propose [pull requests](http://github.com/jevido/pixelpour/pulls) to improve my code, god knows it's awful
+- Big thanks to [fengyuanchen](https://github.com/fengyuanchen) for creating the great cropper.js

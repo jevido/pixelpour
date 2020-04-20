@@ -33,7 +33,6 @@ ScreenManager.prototype.getSources = async function() {
 
 ScreenManager.prototype.makeScreenshot = async function(screen) {
 	let file = await this.getSources().then((sources) => {
-
 		for (let index in sources) {
 			if (sources[index].id != screen) continue;
 
@@ -53,7 +52,7 @@ ScreenManager.prototype.makeScreenshot = async function(screen) {
 
 ScreenManager.prototype.generateScreenshotName = function() {
 	var date = new Date()
-	return `Screenshot ${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())} ${date.getHours()}:${pad(date.getMinutes())}.png`;
+	return `Screenshot ${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}.png`;
 }
 
 ScreenManager.prototype.handleError = function(e) {
