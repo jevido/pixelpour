@@ -4,9 +4,10 @@
 
 		<style>
 			html, body {
-				margin: 0 !important;
-				 padding: 0 !important;
-				 overflow: hidden;
+				margin: 0;
+				padding: 1px solid #f09;
+
+				overflow: hidden;
 			}
 		</style>
 	</head>
@@ -37,12 +38,23 @@
 				}
 				image.src = data;
 
-				document.addEventListener('keyup', function(ev) {
+				document.addEventListener('keyup', async function(ev) {
 					if (ev.keyCode == 13) {
 						let cropped = cropper.getCroppedCanvas();
 						let image = cropped.toDataURL();
-						ipcRenderer.send('upload', image)
+
+						// Careful, send is async, therefor the wait until done. 
+						// Else you will be greeted with a fatal error when the ipcMain returns a value to non-existing browserwindow
+						await ipcRenderer.send('upload', image)
 						remote.getCurrentWindow().close();
+					}
+
+					if (ev.keyCode == 27) {
+						if (cropper.cropped) {
+							cropper.clear();
+						} else {
+							remote.getCurrentWindow().close();
+						}
 					}
 				})
 			})

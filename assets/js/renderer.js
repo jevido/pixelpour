@@ -144,6 +144,7 @@ PixelHandler.prototype.addEventHandlers = function() {
 PixelHandler.prototype.onKeyStroke = async function(ev, data) {
 	let _this = this;
 	data = JSON.parse(data);
+	let browserwindow = null;
 
 	if (data.screen == 'edit') {
 		let cursor = screen.getCursorScreenPoint();
@@ -161,32 +162,37 @@ PixelHandler.prototype.onKeyStroke = async function(ev, data) {
 			for (let index in sources) {
 				let source = sources[index];
 				if (display.id == sources[index].display_id) {					
-					let image = source.thumbnail.toDataURL();
+					if (!browserwindow) {
+						let image = source.thumbnail.toDataURL();
+						browserwindow = new BrowserWindow({
+							fullscreen: true,
+							frame: false,
+							// resizable: true,
+							show: false,
+							alwaysOnTop: true,
+							skipTaskbar: true,
+							webPreferences: {
+								nodeIntegration: true
+							}
+						});
 
-					browserwindow = new BrowserWindow({
-						fullscreen: true,
-						frame: false,
-						resizable: true,
-						alwaysOnTop: true,
-						webPreferences: {
-							nodeIntegration: true
-						}
-					});
-
-					browserwindow.setPosition(display.workArea.x, display.workArea.y)
-					browserwindow.center();
-					
-					browserwindow.loadURL(`file://${__dirname}/assets/js/things/edit/edit.html`);
-					browserwindow.webContents.once('dom-ready', function() {
-						browserwindow.webContents.send('file', image);
-						browserwindow.webContents.on('ipc-message', (ev, key, file) => {
-							_this.uploadFile({
-								title: 'croppy.jpg',
-							}, dataURIToBlob(file))
+						browserwindow.setPosition(display.workArea.x, display.workArea.y)
+						browserwindow.center();
+						browserwindow.webContents.on('dom-ready', () => {
+							browserwindow.show();
 						})
+						
+						browserwindow.loadURL(`file://${__dirname}/assets/js/things/edit/edit.html`);
+						browserwindow.webContents.once('dom-ready', function() {
+							browserwindow.webContents.send('file', image);
+							browserwindow.webContents.on('ipc-message', (ev, key, file) => {
+								_this.uploadFile({
+									title: 'croppy.jpg',
+								}, dataURIToBlob(file))
+							})
 
-					})
-
+						})
+					}
 				}
 			}
 		}
@@ -277,7 +283,6 @@ PixelHandler.prototype.createShortcutContainer = function(enumerate) {
 PixelHandler.prototype.addScreensToScreen = async function() {
 	let screens = await this.screenManager.getSources();
 	let enumerate = 0;
-
 
 	screens.push({
 		img: screens[0].img,
