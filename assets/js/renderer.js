@@ -7,6 +7,8 @@ let { ApiManager } = require('./assets/js/things/ApiManager.js');
 let { ScreenManager } = require('./assets/js/things/ScreenManager.js');
 const Store = require('electron-store');
 
+let browserwindow = null;
+
 let PixelHandler = function() {
 	// Constructor
 	this.pixelDrain = 'https://pixeldrain.com/';
@@ -144,7 +146,6 @@ PixelHandler.prototype.addEventHandlers = function() {
 PixelHandler.prototype.onKeyStroke = async function(ev, data) {
 	let _this = this;
 	data = JSON.parse(data);
-	let browserwindow = null;
 
 	if (data.screen == 'edit') {
 		let cursor = screen.getCursorScreenPoint();
@@ -162,15 +163,15 @@ PixelHandler.prototype.onKeyStroke = async function(ev, data) {
 			for (let index in sources) {
 				let source = sources[index];
 				if (display.id == sources[index].display_id) {					
-					if (!browserwindow) {
+					if (browserwindow == null) {
 						let image = source.thumbnail.toDataURL();
 						browserwindow = new BrowserWindow({
 							fullscreen: true,
 							frame: false,
 							// resizable: true,
-							show: false,
-							alwaysOnTop: true,
-							skipTaskbar: true,
+							// show: false,
+							// alwaysOnTop: true,
+							// skipTaskbar: true,
 							webPreferences: {
 								nodeIntegration: true
 							}
@@ -178,20 +179,21 @@ PixelHandler.prototype.onKeyStroke = async function(ev, data) {
 
 						browserwindow.setPosition(display.workArea.x, display.workArea.y)
 						browserwindow.center();
-						browserwindow.webContents.on('dom-ready', () => {
-							browserwindow.show();
-						})
-						
 						browserwindow.loadURL(`file://${__dirname}/assets/js/things/edit/edit.html`);
-						browserwindow.webContents.once('dom-ready', function() {
+
+						browserwindow.webContents.on('dom-ready', () => {
+							// browserwindow.show();
 							browserwindow.webContents.send('file', image);
 							browserwindow.webContents.on('ipc-message', (ev, key, file) => {
 								_this.uploadFile({
-									title: 'croppy.jpg',
+									title: _this.generateCroppedIamge(),
 								}, dataURIToBlob(file))
 							})
+						});
 
-						})
+						browserwindow.webContents.on('destroyed', () => {
+							browserwindow = null;
+						});
 					}
 				}
 			}
@@ -335,6 +337,12 @@ function newBrowserWindow(url, options) {
 	});	
 	wind.loadURL(url);
 }
+
+PixelHandler.prototype.generateCroppedIamge = function() {
+	var date = new Date()
+	return `Crop ${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}.png`;
+}
+
 
 PixelHandler.prototype.start = async function() {
 	await this.addScreensToScreen()
