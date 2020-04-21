@@ -1,6 +1,6 @@
 {
   "name": "pixelpour",
-  "version": "0.6.77",
+  "version": "0.7.0",
   "description": "Create screenshots & files and upload it to pixeldrain",
   "main": "main.js",
   "devDependencies": {},
@@ -12,8 +12,8 @@
     "electron-store": "^5.1.1",
     "install": "^0.13.0",
     "jquery": "^3.4.1",
-		"store": "^2.0.12",
-		"minimist": ">=1.2.3"
+    "store": "^2.0.12",
+    "minimist": ">=1.2.3"
   },
   "scripts": {
     "start": "electron .",
