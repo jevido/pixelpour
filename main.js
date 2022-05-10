@@ -14,6 +14,9 @@ let win = null;
 let tray = null;
 let icon;
 
+// Allowed insecure shit, like the insecure little bitch that i am
+app.commandLine.appendSwitch('ignore-certificate-errors', 'true');
+
 // Set an icon based on OS
 switch (process.platform) {
   case "win32":
