@@ -8,7 +8,7 @@
   "dependencies": {
     "bootstrap": "^4.3.1",
     "delay": "^4.3.0",
-    "electron": "^5.0.8",
+    "electron": "^9.1.0",
     "electron-store": "^5.1.1",
     "install": "^0.13.0",
     "jquery": "^3.4.1",
